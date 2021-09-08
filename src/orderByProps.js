@@ -1,7 +1,14 @@
 export default (obj, rules) => {
-  const keys = Object.keys(obj);
-  const max = keys.length;
-  keys.sort((a, b) => {
+  const props = [];
+  // eslint-disable-next-line guard-for-in
+  for (const key in obj) {
+    props.push({
+      key,
+      value: obj[key],
+    });
+  }
+  const max = props.length;
+  props.sort(({ key: a }, { key: b }) => {
     let ia = rules.indexOf(a);
     let ib = rules.indexOf(b);
     if (ia === -1) {
@@ -18,9 +25,5 @@ export default (obj, rules) => {
     }
     return ia - ib;
   });
-  const sorted = keys.map((key) => ({
-    key,
-    value: obj[key],
-  }));
-  return sorted;
+  return props;
 };
